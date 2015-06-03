@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">MatchApp</string>
+
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
+    <string name="title_activity_splash">SplashActivity</string>
+    <string name="title_activity_fixture">FixtureActivity</string>
+    <string name="title_activity_team">TeamActivity</string>
+    <string name="title_activity_soccer_season">SoccerSeasonActivity</string>
+</resources>

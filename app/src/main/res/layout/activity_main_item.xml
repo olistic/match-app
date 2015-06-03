@@ -1,0 +1,41 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="horizontal">
+
+    <ImageView
+        android:id="@+id/home_team_image"
+        android:layout_width="50dip"
+        android:layout_height="50dip" />
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical" >
+
+        <TextView
+            android:id="@+id/teams"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            tools:text="Home Team vs. Away Team" />
+
+        <TextView
+            android:id="@+id/soccer_season"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            tools:text="Soccer season" />
+
+        <TextView
+            android:id="@+id/date"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            tools:text="2015/06/05 10:00" />
+    </LinearLayout>
+
+
+    <ImageView
+        android:id="@+id/away_team_image"
+        android:layout_width="50dip"
+        android:layout_height="50dip" />
+</LinearLayout>
