@@ -1,13 +1,20 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context="uy.edu.ucu.matchapp.TeamActivity">
 
+    <ImageView
+        android:id="@+id/team_image"
+        android:layout_width="160dip"
+        android:layout_height="160dip"
+        android:layout_gravity="center_horizontal" />
+
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Market value $321.700.000"
+        tools:text="Market value $321.700.000"
         android:id="@+id/team_market_value"
         android:layout_margin="8dp"
         android:layout_gravity="center_horizontal" />
@@ -18,20 +25,20 @@
         android:layout_height="wrap_content">
 
         <TextView
+            android:id="@+id/team_current_position"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="1"
             android:layout_marginLeft="8dp"
             android:layout_weight="1"
             android:textStyle="bold"
-            android:id="@+id/team_current_position" />
+            tools:text="1" />
 
         <TextView
+            android:id="@+id/team_name_grid"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="Juventus"
             android:layout_weight="4"
-            android:id="@+id/team_name_grid" />
+            tools:text="Juventus" />
 
         <LinearLayout
             android:orientation="vertical"
@@ -48,16 +55,13 @@
                     android:layout_width="0dp"
                     android:layout_weight="1"
                     android:layout_height="wrap_content"
-                    android:text="PJ"
-
-                     />
+                    android:text="PJ" />
 
                 <TextView
                     android:layout_width="0dp"
                     android:layout_weight="1"
                     android:layout_height="wrap_content"
-                    android:text="GF"
-                     />
+                    android:text="GF" />
 
                 <TextView
                     android:layout_width="0dp"
@@ -69,16 +73,14 @@
                     android:layout_width="0dp"
                     android:layout_weight="1"
                     android:layout_height="wrap_content"
-                    android:text="DIF."
-                    />
+                    android:text="DIF." />
 
                 <TextView
                     android:layout_width="0dp"
                     android:layout_weight="1"
                     android:layout_height="wrap_content"
                     android:text="PTS"
-                    android:textStyle="bold"
-                     />
+                    android:textStyle="bold" />
             </LinearLayout>
 
             <LinearLayout
@@ -87,40 +89,40 @@
                 android:layout_height="wrap_content">
 
                 <TextView
+                    android:id="@+id/team_pj"
                     android:layout_width="0dp"
                     android:layout_weight="1"
                     android:layout_height="wrap_content"
-                    android:text="31"
-                    android:id="@+id/team_pj" />
+                    tools:text="31" />
 
                 <TextView
+                    android:id="@+id/team_gf"
                     android:layout_width="0dp"
                     android:layout_weight="1"
                     android:layout_height="wrap_content"
-                    android:text="40"
-                    android:id="@+id/team_gf" />
+                    tools:text="40" />
 
                 <TextView
+                    android:id="@+id/team_ga"
                     android:layout_width="0dp"
                     android:layout_weight="1"
                     android:layout_height="wrap_content"
-                    android:text="40"
-                    android:id="@+id/team_ga" />
+                    tools:text="40" />
 
                 <TextView
+                    android:id="@+id/team_dif"
                     android:layout_width="0dp"
                     android:layout_weight="1"
                     android:layout_height="wrap_content"
-                    android:text="40"
-                    android:id="@+id/team_dif" />
+                    tools:text="40" />
 
                 <TextView
-                    android:layout_width="0dp"
-                    android:layout_weight="1"
-                    android:layout_height="wrap_content"
-                    android:text="73"
                     android:id="@+id/team_pts"
-                    android:textStyle="bold"/>
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    android:textStyle="bold"
+                    tools:text="73" />
             </LinearLayout>
 
         </LinearLayout>
@@ -131,11 +133,7 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Team"
         android:layout_marginLeft="8dp"
+        tools:text="Team"
         android:textStyle="bold" />
-
-
-
-
 </LinearLayout>

@@ -18,7 +18,7 @@ import uy.edu.ucu.matchapp.network.interceptors.CacheInterceptor;
 public class RestClient {
     private static final String BASE_URL = "http://api.football-data.org/alpha/";
     private static final long CACHE_SIZE = 10 * 1024 * 1024;
-    private FootballDataService footballDataService;
+    private FootballDataService mFootballDataService;
 
     public RestClient(Context context) {
         // Set up HTTP client with cache
@@ -44,10 +44,10 @@ public class RestClient {
                 .setRequestInterceptor(new AuthTokenRequestInterceptor())
                 .build();
 
-        footballDataService = restAdapter.create(FootballDataService.class);
+        mFootballDataService = restAdapter.create(FootballDataService.class);
     }
 
-    public FootballDataService getFootballDataService() {
-        return footballDataService;
+    public FootballDataService getmFootballDataService() {
+        return mFootballDataService;
     }
 }

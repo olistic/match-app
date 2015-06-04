@@ -3,10 +3,11 @@ package uy.edu.ucu.matchapp;
 import android.app.ListActivity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Parcelable;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Spinner;
@@ -26,23 +27,44 @@ import uy.edu.ucu.matchapp.views.adapters.FixturesAdapter;
 
 public class MainActivity extends ListActivity {
 
-    private ArrayList<SoccerSeason> soccerSeasonList;
-    private ArrayList<Fixture> fixtureList;
+    private FixturesAdapter mFixturesAdapter;
+    private ArrayAdapter<SoccerSeason> mSoccerSeasonAdapter;
+    private Spinner mSoccerSeasonSpinner;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        final Spinner spnSoccerSeasons = (Spinner) findViewById(R.id.soccer_seasons);
+        mFixturesAdapter = new FixturesAdapter(getApplicationContext(), new ArrayList<Fixture>());
+        setListAdapter(mFixturesAdapter);
 
-        // Fetch soccer seasons
-        new RestClient(this).getFootballDataService().getSoccerSeasons(new Callback<ArrayList<SoccerSeason>>() {
+        // Fetch fixtures
+        // TODO: Fetch only today's fixtures
+        new RestClient(this).getmFootballDataService().getFixtures(null, null, new Callback<Fixtures>() {
             @Override
-            public void success(ArrayList<SoccerSeason> soccerSeasons, Response response) {
-                soccerSeasonList = soccerSeasons;
-                spnSoccerSeasons.setAdapter(new ArrayAdapter<SoccerSeason>(getApplicationContext(),
-                        android.R.layout.simple_spinner_item, soccerSeasonList));
+            public void success(Fixtures fixtures, Response response) {
+                for (final Fixture fixture : fixtures.getFixtureList()) {
+                    // Get soccer season id from URL
+                    String soccerSeasonUrl = fixture.getLinks().get("soccerseason").get("href");
+                    int soccerSeasonId = Integer.parseInt(soccerSeasonUrl.substring(soccerSeasonUrl.lastIndexOf('/') + 1));
+
+                    // Fetch fixture's soccer season
+                    new RestClient(getApplicationContext()).getmFootballDataService().getSoccerSeason(soccerSeasonId, new Callback<SoccerSeason>() {
+                        @Override
+                        public void success(SoccerSeason soccerSeason, Response response) {
+                            fixture.setSoccerSeason(soccerSeason);
+                            mFixturesAdapter.add(fixture);
+                        }
+
+                        @Override
+                        public void failure(RetrofitError error) {
+                            // TODO: Handle error
+                        }
+                    });
+                }
+
+
             }
 
             @Override
@@ -51,68 +73,47 @@ public class MainActivity extends ListActivity {
             }
         });
 
-        // Fetch fixtures
-        new RestClient(this).getFootballDataService().getFixtures(null, null, new Callback<Fixtures>() {
+        mSoccerSeasonSpinner = (Spinner) findViewById(R.id.soccer_seasons);
+        mSoccerSeasonAdapter = new ArrayAdapter<>(getApplicationContext(), android.R.layout.simple_spinner_item, new ArrayList<SoccerSeason>());
+        mSoccerSeasonSpinner.setAdapter(mSoccerSeasonAdapter);
+
+        // Create fake soccer season
+        SoccerSeason fakeSoccerSeason = new SoccerSeason();
+        fakeSoccerSeason.setCaption("All soccer seasons");
+        mSoccerSeasonAdapter.add(fakeSoccerSeason);
+
+        // Fetch soccer seasons
+        new RestClient(this).getmFootballDataService().getSoccerSeasons(new Callback<ArrayList<SoccerSeason>>() {
             @Override
-            public void success(Fixtures fixtures, Response response) {
-                fixtureList = fixtures.getFixtureList();
-
-                for (final Fixture fixture : fixtureList) {
-                    // Fetch fixture's soccer season
-                    String soccerSeasonUrl = fixture.getLinks().get("soccerseason").get("href");
-                    int soccerSeasonId = Integer.parseInt(soccerSeasonUrl.substring(soccerSeasonUrl.lastIndexOf('/') + 1));
-                    new RestClient(getApplicationContext()).getFootballDataService().getSoccerSeason(soccerSeasonId, new Callback<SoccerSeason>() {
-                        @Override
-                        public void success(SoccerSeason soccerSeason, Response response) {
-                            fixture.setSoccerSeason(soccerSeason);
-                            ((FixturesAdapter) getListAdapter()).notifyDataSetChanged();
-                        }
-
-                        @Override
-                        public void failure(RetrofitError error) {
-                            // TODO: Handle error
-                        }
-                    });
-
-                    // Fetch home team
-//                    String homeTeamUrl = fixture.getLinks().get("homeTeam").get("href");
-//                    int homeTeamId = Integer.parseInt(homeTeamUrl.substring(homeTeamUrl.lastIndexOf('/') + 1));
-//                    new RestClient().getFootballDataService().getTeam(homeTeamId, new Callback<Team>() {
-//                        @Override
-//                        public void success(Team team, Response response) {
-//                            fixture.setHomeTeam(team);
-//                            ((FixturesAdapter) getListAdapter()).notifyDataSetChanged();
-//                        }
-//
-//                        @Override
-//                        public void failure(RetrofitError error) {
-//
-//                        }
-//                    });
-
-                    // Fetch away team
-//                    String awayTeamUrl = fixture.getLinks().get("awayTeam").get("href");
-//                    int awayTeamId = Integer.parseInt(awayTeamUrl.substring(awayTeamUrl.lastIndexOf('/') + 1));
-//                    new RestClient().getFootballDataService().getTeam(awayTeamId, new Callback<Team>() {
-//                        @Override
-//                        public void success(Team team, Response response) {
-//                            fixture.setAwayTeam(team);
-//                            ((FixturesAdapter) getListAdapter()).notifyDataSetChanged();
-//                        }
-//
-//                        @Override
-//                        public void failure(RetrofitError error) {
-//
-//                        }
-//                    });
-                }
-
-                setListAdapter(new FixturesAdapter(getApplicationContext(), fixtureList));
+            public void success(ArrayList<SoccerSeason> soccerSeasons, Response response) {
+                mSoccerSeasonAdapter.addAll(soccerSeasons);
             }
 
             @Override
             public void failure(RetrofitError error) {
                 // TODO: Handle error
+            }
+        });
+
+        mSoccerSeasonSpinner.setOnItemSelectedListener(new OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                // Cause the action bar to redraw
+                invalidateOptionsMenu();
+
+                String constraint = null;
+                if (position != 0) {
+                    // Set filter constraint to selected soccer season caption
+                    SoccerSeason selectedSoccerSeason = mSoccerSeasonAdapter.getItem(position);
+                    constraint = selectedSoccerSeason.getCaption();
+                }
+
+                mFixturesAdapter.getFilter().filter(constraint);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
             }
         });
     }
@@ -124,6 +125,15 @@ public class MainActivity extends ListActivity {
         Intent intent = new Intent(getApplicationContext(), FixtureActivity.class);
         intent.putExtra("FIXTURE", Parcels.wrap(fixture));
         startActivity(intent);
+    }
+
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        // If All soccer seasons is selected, hide action bar icon
+        if (mSoccerSeasonSpinner.getSelectedItemPosition() == 0) {
+            menu.getItem(0).setVisible(false);
+        }
+        return super.onPrepareOptionsMenu(menu);
     }
 
     @Override
@@ -140,10 +150,15 @@ public class MainActivity extends ListActivity {
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
-//        if (id == R.id.action_settings) {
-//            return true;
-//        }
+        switch (id) {
+            case R.id.action_league_table:
+                SoccerSeason soccerSeason = (SoccerSeason) mSoccerSeasonSpinner.getSelectedItem();
+
+                Intent intent = new Intent(getApplicationContext(), LeagueTableActivity.class);
+                intent.putExtra("SOCCER_SEASON", Parcels.wrap(soccerSeason));
+                startActivity(intent);
+                return true;
+        }
 
         return super.onOptionsItemSelected(item);
     }

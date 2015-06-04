@@ -8,23 +8,55 @@ import android.widget.TextView;
 
 import org.parceler.Parcels;
 
+import retrofit.Callback;
+import retrofit.RetrofitError;
+import retrofit.client.Response;
 import uy.edu.ucu.matchapp.models.Fixture;
+import uy.edu.ucu.matchapp.models.FixtureDetail;
+import uy.edu.ucu.matchapp.network.RestClient;
 
 
 public class FixtureActivity extends Activity {
 
-    private Fixture fixture;
+    private FixtureDetail mFixtureDetail;
+    private TextView mMatchDayTextView;
+    private TextView mStatusTextView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_fixture);
 
-        fixture = Parcels.unwrap(this.getIntent().getParcelableExtra("FIXTURE"));
+        // Look up view for data population
+        mMatchDayTextView = (TextView) findViewById(R.id.match_day);
+        mStatusTextView = (TextView) findViewById(R.id.status);
 
-        TextView tvMatchDay = (TextView) findViewById(R.id.match_day);
+        // Get fixture from intent
+        Fixture fixture = Parcels.unwrap(this.getIntent().getParcelableExtra("FIXTURE"));
 
-        tvMatchDay.setText(Integer.toString(fixture.getMatchDay()));
+        // Set action bar title to soccer season caption
+        if (fixture.getSoccerSeason() != null) {
+            setTitle(fixture.getSoccerSeason().getCaption());
+        }
+
+        // Fetch fixture detail
+        String fixtureUrl = fixture.getLinks().get("self").get("href");
+        int fixtureId = Integer.parseInt(fixtureUrl.substring(fixtureUrl.lastIndexOf('/') + 1));
+        new RestClient(this).getmFootballDataService().getFixtureDetail(fixtureId, new Callback<FixtureDetail>() {
+            @Override
+            public void success(FixtureDetail fixtureDetail, Response response) {
+                mFixtureDetail = fixtureDetail;
+
+                // Populate the data into the template view using the data object
+                mMatchDayTextView.setText(String.format("Match day %d", mFixtureDetail.getFixture().getMatchDay()));
+                mStatusTextView.setText(mFixtureDetail.getFixture().getStatus());
+            }
+
+            @Override
+            public void failure(RetrofitError error) {
+                // TODO: Handle error
+            }
+        });
     }
 
     @Override
@@ -41,9 +73,10 @@ public class FixtureActivity extends Activity {
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
+        switch (id) {
+            case R.id.action_share:
+                // TODO: Share fixture in social networks
+                return true;
         }
 
         return super.onOptionsItemSelected(item);

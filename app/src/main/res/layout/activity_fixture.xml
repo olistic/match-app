@@ -18,19 +18,36 @@
             android:id="@+id/match_day"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:gravity="start"
+            android:textStyle="bold"
             tools:text="Match day 32" />
-
-        <TextView
-            android:id="@+id/date"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            tools:text="yyyy-MM-dd" />
 
         <TextView
             android:id="@+id/status"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:gravity="end"
             tools:text="Status" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="start"
+            tools:text="yyyy-MM-dd" />
+
+        <TextView
+            android:id="@+id/time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="end"
+            tools:text="hh:mm" />
     </LinearLayout>
 
     <LinearLayout
@@ -43,7 +60,12 @@
             android:layout_width="100dip"
             android:layout_height="100dip" />
 
-
+        <TextView
+            android:id="@+id/result"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="48dp"
+            tools:text="0:0" />
 
         <ImageView
             android:id="@+id/away_team_image"
@@ -51,5 +73,32 @@
             android:layout_height="100dip" />
     </LinearLayout>
 
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Head to head"
+        android:textStyle="bold" />
 
+    <TextView
+        android:id="@+id/home_team_wins"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        tools:text="Home team" />
+
+    <TextView
+        android:id="@+id/away_team_wins"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        tools:text="Away team" />
+
+    <TextView
+        android:id="@+id/draws"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        tools:text="Draws" />
+
+    <ListView
+        android:id="@+id/head_to_head"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
 </LinearLayout>

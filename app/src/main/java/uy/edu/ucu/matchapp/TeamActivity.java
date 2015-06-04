@@ -2,37 +2,27 @@ package uy.edu.ucu.matchapp;
 
 import android.app.Activity;
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuItem;
+
+import org.parceler.Parcels;
+
+import uy.edu.ucu.matchapp.models.Team;
 
 
 public class TeamActivity extends Activity {
+
+    private Team mTeam;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_team);
-    }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_team, menu);
-        return true;
-    }
+        // Get mTeam from intent
+        mTeam = Parcels.unwrap(this.getIntent().getParcelableExtra("TEAM"));
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
+        // Set Action Bar title to mTeam's name
+        if (mTeam.getName() != null) {
+            getActionBar().setTitle(mTeam.getName());
         }
-
-        return super.onOptionsItemSelected(item);
     }
 }

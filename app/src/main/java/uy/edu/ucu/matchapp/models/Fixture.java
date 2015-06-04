@@ -24,6 +24,8 @@ public class Fixture {
     private String homeTeamName;
     @Expose
     private String awayTeamName;
+    @Expose
+    private HashMap<String, Integer> result;
     private SoccerSeason soccerSeason;
     private Team homeTeam;
     private Team awayTeam;
@@ -76,6 +78,14 @@ public class Fixture {
 
     public void setAwayTeamName(String awayTeamName) {
         this.awayTeamName = awayTeamName;
+    }
+
+    public HashMap<String, Integer> getResult() {
+        return result;
+    }
+
+    public void setResult(HashMap<String, Integer> result) {
+        this.result = result;
     }
 
     public SoccerSeason getSoccerSeason() {

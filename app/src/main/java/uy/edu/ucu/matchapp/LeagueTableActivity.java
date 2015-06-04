@@ -17,19 +17,19 @@ import uy.edu.ucu.matchapp.network.RestClient;
 
 public class LeagueTableActivity extends Activity {
 
-    private SoccerSeason soccerSeason;
+    private SoccerSeason mSoccerSeason;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_soccer_season);
 
-        soccerSeason = Parcels.unwrap(this.getIntent().getParcelableExtra("SOCCER_SEASON"));
+        mSoccerSeason = Parcels.unwrap(this.getIntent().getParcelableExtra("SOCCER_SEASON"));
 
         // Fetch league table
-        String soccerSeasonUrl = soccerSeason.getLinks().get("self").get("href");
+        String soccerSeasonUrl = mSoccerSeason.getLinks().get("self").get("href");
         int soccerSeasonId = Integer.parseInt(soccerSeasonUrl.substring(soccerSeasonUrl.lastIndexOf('/') + 1));
-        new RestClient(this).getFootballDataService().getSoccerSeasonLeagueTable(soccerSeasonId, new Callback<LeagueTable>() {
+        new RestClient(this).getmFootballDataService().getSoccerSeasonLeagueTable(soccerSeasonId, new Callback<LeagueTable>() {
             @Override
             public void success(LeagueTable leagueTable, Response response) {
 
