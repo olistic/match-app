@@ -9,7 +9,6 @@ import java.util.List;
 
 @Parcel
 public class StandingTeam {
-
     @Expose
     private int position;
     @Expose

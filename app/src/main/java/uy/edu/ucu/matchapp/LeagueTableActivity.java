@@ -29,7 +29,7 @@ public class LeagueTableActivity extends Activity {
         // Fetch league table
         String soccerSeasonUrl = mSoccerSeason.getLinks().get("self").get("href");
         int soccerSeasonId = Integer.parseInt(soccerSeasonUrl.substring(soccerSeasonUrl.lastIndexOf('/') + 1));
-        new RestClient(this).getmFootballDataService().getSoccerSeasonLeagueTable(soccerSeasonId, new Callback<LeagueTable>() {
+        new RestClient(this).getFootballDataService().getSoccerSeasonLeagueTable(soccerSeasonId, new Callback<LeagueTable>() {
             @Override
             public void success(LeagueTable leagueTable, Response response) {
 

@@ -10,7 +10,6 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import org.parceler.Parcels;
-import org.w3c.dom.Text;
 
 import retrofit.Callback;
 import retrofit.RetrofitError;
@@ -66,14 +65,14 @@ public class FixtureActivity extends Activity {
         // Fetch fixture detail
         String fixtureUrl = fixture.getLinks().get("self").get("href");
         int fixtureId = Integer.parseInt(fixtureUrl.substring(fixtureUrl.lastIndexOf('/') + 1));
-        new RestClient(this).getmFootballDataService().getFixtureDetail(fixtureId, new Callback<FixtureDetail>() {
+        new RestClient(this).getFootballDataService().getFixtureDetail(fixtureId, new Callback<FixtureDetail>() {
             @Override
             public void success(FixtureDetail fixtureDetail, Response response) {
                 mFixtureDetail = fixtureDetail;
 
                 String soccerSeasonUrl = mFixtureDetail.getFixture().getLinks().get("soccerseason").get("href");
                 int soccerSeasonId = Integer.parseInt(soccerSeasonUrl.substring(soccerSeasonUrl.lastIndexOf('/') + 1));
-                new RestClient(getApplicationContext()).getmFootballDataService().getSoccerSeasonLeagueTable(soccerSeasonId, new Callback<LeagueTable>() {
+                new RestClient(getApplicationContext()).getFootballDataService().getSoccerSeasonLeagueTable(soccerSeasonId, new Callback<LeagueTable>() {
                     @Override
                     public void success(LeagueTable leagueTable, Response response) {
                         mLeagueTable = leagueTable;
@@ -93,7 +92,7 @@ public class FixtureActivity extends Activity {
 
                 String homeTeamUrl = mFixtureDetail.getFixture().getLinks().get("homeTeam").get("href");
                 final int homeTeamId = Integer.parseInt(homeTeamUrl.substring(homeTeamUrl.lastIndexOf('/') + 1));
-                new RestClient(getApplicationContext()).getmFootballDataService().getTeam(homeTeamId, new Callback<Team>() {
+                new RestClient(getApplicationContext()).getFootballDataService().getTeam(homeTeamId, new Callback<Team>() {
                     @Override
                     public void success(Team team, Response response) {
                         mFixtureDetail.getFixture().setHomeTeam(team);
@@ -116,7 +115,7 @@ public class FixtureActivity extends Activity {
                 });
                 String awayTeamUrl = mFixtureDetail.getFixture().getLinks().get("awayTeam").get("href");
                 final int awayTeamId = Integer.parseInt(awayTeamUrl.substring(awayTeamUrl.lastIndexOf('/') + 1));
-                new RestClient(getApplicationContext()).getmFootballDataService().getTeam(awayTeamId, new Callback<Team>() {
+                new RestClient(getApplicationContext()).getFootballDataService().getTeam(awayTeamId, new Callback<Team>() {
                     @Override
                     public void success(Team team, Response response) {
                         mFixtureDetail.getFixture().setAwayTeam(team);

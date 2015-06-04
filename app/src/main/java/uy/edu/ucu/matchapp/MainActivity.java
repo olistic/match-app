@@ -41,7 +41,7 @@ public class MainActivity extends ListActivity {
 
         // Fetch fixtures
         // TODO: Fetch only today's fixtures
-        new RestClient(this).getmFootballDataService().getFixtures(null, null, new Callback<Fixtures>() {
+        new RestClient(this).getFootballDataService().getFixtures(null, null, new Callback<Fixtures>() {
             @Override
             public void success(Fixtures fixtures, Response response) {
                 for (final Fixture fixture : fixtures.getFixtureList()) {
@@ -50,7 +50,7 @@ public class MainActivity extends ListActivity {
                     int soccerSeasonId = Integer.parseInt(soccerSeasonUrl.substring(soccerSeasonUrl.lastIndexOf('/') + 1));
 
                     // Fetch fixture's soccer season
-                    new RestClient(getApplicationContext()).getmFootballDataService().getSoccerSeason(soccerSeasonId, new Callback<SoccerSeason>() {
+                    new RestClient(getApplicationContext()).getFootballDataService().getSoccerSeason(soccerSeasonId, new Callback<SoccerSeason>() {
                         @Override
                         public void success(SoccerSeason soccerSeason, Response response) {
                             fixture.setSoccerSeason(soccerSeason);
@@ -63,8 +63,6 @@ public class MainActivity extends ListActivity {
                         }
                     });
                 }
-
-
             }
 
             @Override
@@ -83,7 +81,7 @@ public class MainActivity extends ListActivity {
         mSoccerSeasonAdapter.add(fakeSoccerSeason);
 
         // Fetch soccer seasons
-        new RestClient(this).getmFootballDataService().getSoccerSeasons(new Callback<ArrayList<SoccerSeason>>() {
+        new RestClient(this).getFootballDataService().getSoccerSeasons(new Callback<ArrayList<SoccerSeason>>() {
             @Override
             public void success(ArrayList<SoccerSeason> soccerSeasons, Response response) {
                 mSoccerSeasonAdapter.addAll(soccerSeasons);

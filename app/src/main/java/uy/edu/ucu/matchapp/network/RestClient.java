@@ -47,7 +47,7 @@ public class RestClient {
         mFootballDataService = restAdapter.create(FootballDataService.class);
     }
 
-    public FootballDataService getmFootballDataService() {
+    public FootballDataService getFootballDataService() {
         return mFootballDataService;
     }
 }

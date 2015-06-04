@@ -9,8 +9,6 @@ import java.util.ArrayList;
 
 @Parcel
 public class HeadToHead {
-
-
     @Expose
     private Integer homeTeamWins;
     @Expose
@@ -22,9 +20,6 @@ public class HeadToHead {
     private ArrayList<Fixture> fixtureList;
 
     public HeadToHead() { /* Required empty bean constructor */ }
-
-
-
 
     public Integer getHomeTeamWins() {
         return homeTeamWins;

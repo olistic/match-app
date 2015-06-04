@@ -1,14 +1,11 @@
 package uy.edu.ucu.matchapp;
 
 import android.app.Activity;
-import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import org.parceler.Parcels;
-import org.w3c.dom.Text;
 
 import retrofit.Callback;
 import retrofit.RetrofitError;
@@ -20,7 +17,6 @@ import uy.edu.ucu.matchapp.models.StandingTeam;
 import uy.edu.ucu.matchapp.models.Team;
 import uy.edu.ucu.matchapp.network.RestClient;
 import uy.edu.ucu.matchapp.views.adapters.PlayerListItemView;
-
 
 public class TeamActivity extends Activity {
 
@@ -37,8 +33,6 @@ public class TeamActivity extends Activity {
     private TextView team_dif;
     private TextView team_pts;
     private LinearLayout playersLinearLayout;
-
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,7 +66,6 @@ public class TeamActivity extends Activity {
         team_pts = (TextView) findViewById(R.id.team_pts);
         playersLinearLayout = (LinearLayout) findViewById(R.id.teamPlayersLinearLayout);
 
-
         marketvalue.setText(mTeam.getSquadMarketValue());
         teamName.setText(mTeam.getName());
         teamCurrentPosition.setText(String.valueOf(mStandingTeam.getPosition()));
@@ -82,8 +75,7 @@ public class TeamActivity extends Activity {
         team_dif.setText(String.valueOf(mStandingTeam.getGoalDifference()));
         team_pts.setText(String.valueOf(mStandingTeam.getPoints()));
 
-
-        new RestClient(getApplicationContext()).getmFootballDataService().getTeamPlayers(teamID, new Callback<Players>() {
+        new RestClient(getApplicationContext()).getFootballDataService().getTeamPlayers(teamID, new Callback<Players>() {
             @Override
             public void success(Players players, Response response) {
                 for(Player p : players.getPlayerList()){
