@@ -8,7 +8,9 @@
     <Spinner
         android:id="@+id/soccer_seasons"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:textColor="@color/primary_text"
+        android:padding="10dp"/>
 
     <ListView
         android:id="@id/android:list"
@@ -21,6 +23,7 @@
         android:id="@id/android:empty"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:padding="10dp"
         android:text="No matches today." />
 
 </LinearLayout>

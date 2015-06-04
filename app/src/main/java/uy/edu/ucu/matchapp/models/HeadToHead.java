@@ -9,12 +9,8 @@ import java.util.ArrayList;
 
 @Parcel
 public class HeadToHead {
-    @Expose
-    private String timeFrameStart;
-    @Expose
-    private String timeFrameEnd;
-    @Expose
-    private Integer count;
+
+
     @Expose
     private Integer homeTeamWins;
     @Expose
@@ -27,29 +23,8 @@ public class HeadToHead {
 
     public HeadToHead() { /* Required empty bean constructor */ }
 
-    public String getTimeFrameStart() {
-        return timeFrameStart;
-    }
 
-    public void setTimeFrameStart(String timeFrameStart) {
-        this.timeFrameStart = timeFrameStart;
-    }
 
-    public String getTimeFrameEnd() {
-        return timeFrameEnd;
-    }
-
-    public void setTimeFrameEnd(String timeFrameEnd) {
-        this.timeFrameEnd = timeFrameEnd;
-    }
-
-    public Integer getCount() {
-        return count;
-    }
-
-    public void setCount(Integer count) {
-        this.count = count;
-    }
 
     public Integer getHomeTeamWins() {
         return homeTeamWins;

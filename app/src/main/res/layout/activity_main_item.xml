@@ -2,23 +2,33 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:padding="10dp">
 
     <TextView
         android:id="@+id/teams"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        tools:text="Home Team vs. Away Team" />
+        tools:text="Home Team vs. Away Team"
+        android:textColor="@color/primary_text"
+        android:textSize="18sp"
+        android:layout_marginBottom="4dp"
+        />
 
     <TextView
         android:id="@+id/soccer_season"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        tools:text="Soccer season" />
+        tools:text="Soccer season"
+        android:textSize="15sp"
+        android:textColor="@color/primary_text"/>
 
     <TextView
         android:id="@+id/date"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        tools:text="2015/06/05 10:00" />
+        tools:text="2015/06/05 10:00"
+        android:textSize="15sp"
+        android:textColor="@color/primary_text"
+        android:layout_marginBottom="5dp"/>
 </LinearLayout>

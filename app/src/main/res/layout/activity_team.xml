@@ -12,10 +12,12 @@
         android:layout_gravity="center_horizontal" />
 
     <TextView
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
+        android:gravity="center"
         android:layout_height="wrap_content"
         tools:text="Market value $321.700.000"
         android:id="@+id/team_market_value"
+        android:textColor="@color/primary_text"
         android:layout_margin="8dp"
         android:layout_gravity="center_horizontal" />
 
@@ -37,6 +39,7 @@
             android:id="@+id/team_name_grid"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:textColor="@color/primary_text"
             android:layout_weight="4"
             tools:text="Juventus" />
 
@@ -130,10 +133,32 @@
 
     </LinearLayout>
 
+    <View
+        android:layout_width="fill_parent"
+        android:layout_height="1dp"
+        android:background="@android:color/darker_gray"
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="5dp"
+        />
+
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="8dp"
-        tools:text="Team"
-        android:textStyle="bold" />
+        android:text="Team"
+        android:textStyle="bold"
+        android:layout_marginBottom="5dp"/>
+
+    <ScrollView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+         >
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/teamPlayersLinearLayout"></LinearLayout>
+    </ScrollView>
+
 </LinearLayout>

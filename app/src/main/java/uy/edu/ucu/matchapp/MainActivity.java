@@ -74,7 +74,7 @@ public class MainActivity extends ListActivity {
         });
 
         mSoccerSeasonSpinner = (Spinner) findViewById(R.id.soccer_seasons);
-        mSoccerSeasonAdapter = new ArrayAdapter<>(getApplicationContext(), android.R.layout.simple_spinner_item, new ArrayList<SoccerSeason>());
+        mSoccerSeasonAdapter = new ArrayAdapter<>(getApplicationContext(), R.layout.spinner_item, new ArrayList<SoccerSeason>());
         mSoccerSeasonSpinner.setAdapter(mSoccerSeasonAdapter);
 
         // Create fake soccer season

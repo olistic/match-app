@@ -1,6 +1,7 @@
 package uy.edu.ucu.matchapp.models;
 
 import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.SerializedName;
 
 import org.parceler.Parcel;
 
@@ -9,6 +10,7 @@ public class FixtureDetail {
     @Expose
     private Fixture fixture;
     @Expose
+    @SerializedName("head2head")
     private HeadToHead headToHead;
 
     public FixtureDetail() { /* Required empty bean constructor */ }
