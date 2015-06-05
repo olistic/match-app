@@ -42,10 +42,8 @@ public class MainActivity extends ListActivity {
         setListAdapter(mFixturesAdapter);
 
         // Fetch fixtures
-        // TODO: Fetch only today's fixtures
-        String today = null;
-//        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
-//        String today = df.format(new Date());
+        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+        String today = df.format(new Date());
 
         new RestClient(this).getFootballDataService().getFixtures(today, today, new Callback<Fixtures>() {
             @Override
