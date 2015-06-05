@@ -1,172 +1,158 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-
-    tools:context="com.edu.ucu.matchapp.FixtureActivity"
-    android:id="@+id/fixtureRelativeLayout">
+    tools:context="com.edu.ucu.matchapp.FixtureActivity">
 
     <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="MatchDay"
-        android:id="@+id/fixtureMatchday" />
-
-    <TextView
+        android:id="@+id/fixture_match_day"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceSmall"
-        android:text="Date"
-        android:id="@+id/fixtureDate"
-        android:layout_below="@+id/fixtureMatchday"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
+        android:textStyle="bold"
+        tools:text="Match day 42" />
+
+    <TextView
+        android:id="@+id/fixture_date"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/fixture_match_day"
+        android:layout_alignParentStart="true"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        tools:text="Date" />
+
+    <TextView
+        android:id="@+id/fixture_status"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        tools:text="Status" />
+
+    <TextView
+        android:id="@+id/fixture_time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/fixture_status"
+        android:layout_alignParentEnd="true"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        tools:text="Time" />
 
     <View
+        android:id="@+id/separator_one"
         android:layout_width="fill_parent"
         android:layout_height="1dp"
-        android:background="@android:color/darker_gray"
-        android:id="@+id/separator1"
-        android:layout_below="@+id/fixtureDate"
-        android:layout_alignParentEnd="true" />
+        android:layout_below="@+id/fixture_date"
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="@dimen/spacing_normal"
+        android:layout_marginBottom="@dimen/spacing_normal"
+        android:background="@android:color/darker_gray" />
 
     <TextView
+        android:id="@+id/fixture_home_team"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="HomeTeam"
-        android:textSize="28sp"
-        android:textColor="@color/primary_text"
-        android:id="@+id/fixtureHomeTeam"
-        android:layout_marginTop="22dp"
-        android:layout_below="@+id/fixtureDate"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textSize="28sp"
-        android:textColor="@color/primary_text"
-        android:text="AwayTeam"
-        android:id="@+id/fixtureAwayTeam"
-        android:layout_below="@+id/fixtureVS"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_below="@+id/separator_one"
+        android:layout_alignParentStart="true"
         android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="VS"
-        android:id="@+id/fixtureVS"
-        android:layout_below="@+id/fixtureHomeTeam"
-        android:layout_centerHorizontal="true" />
+        tools:text="Home team" />
+
+    <TextView
+        android:id="@+id/vs"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/fixture_home_team"
+        android:layout_centerHorizontal="true"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textColor="@color/secondary_text"
+        android:text="VS." />
+
+    <TextView
+        android:id="@+id/fixture_away_team"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/vs"
+        android:layout_alignParentEnd="true"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        tools:text="Away team" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_above="@id/vs"
+        android:layout_alignParentEnd="true"
+        android:text="(home)"
         android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="Status"
-        android:id="@+id/fixtureStatus"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true" />
+        android:textColor="@color/secondary_text" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceSmall"
-        android:text="(Home)"
-        android:textColor="@color/lightGray"
-        android:id="@+id/fixtureHomeLabel"
-        android:layout_above="@+id/fixtureVS"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true" />
+        android:layout_below="@id/vs"
+        android:layout_alignParentStart="true"
+        android:text="(away)"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:textColor="@color/secondary_text" />
+
+    <View
+        android:id="@+id/separator_two"
+        android:layout_width="fill_parent"
+        android:layout_height="1dp"
+        android:layout_below="@id/fixture_away_team"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="@dimen/spacing_small"
+        android:layout_marginBottom="@dimen/spacing_small"
+        android:background="@android:color/darker_gray" />
 
     <TextView
+        android:id="@+id/head_to_head"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceSmall"
-        android:text="(Away)"
-        android:textColor="@color/lightGray"
-        android:id="@+id/fixtureAwayLabel"
-        android:layout_alignBottom="@+id/fixtureAwayTeam"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
-
-        <View
-            android:layout_width="fill_parent"
-            android:layout_height="1dp"
-            android:background="@android:color/darker_gray"
-            android:id="@+id/separator2"
-            android:layout_alignTop="@+id/lblHeadToHead"
-            android:layout_alignParentStart="true" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textSize="20sp"
-        android:textColor="@color/primary_text"
+        android:layout_below="@+id/separator_two"
+        android:layout_alignParentStart="true"
+        android:layout_marginBottom="@dimen/spacing_small"
         android:text="Head to Head"
-        android:textStyle="bold"
-        android:layout_below="@+id/fixtureAwayLabel"
-        android:layout_alignParentStart="true"
-        android:layout_marginTop="35dp"
-        android:layout_marginBottom="15dp"
-        android:id="@+id/lblHeadToHead" />
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:textStyle="bold" />
 
     <TextView
+        android:id="@+id/home_team_wins"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="Team1Wins"
-        android:layout_marginLeft="6dp"
-        android:layout_marginBottom="12dp"
-        android:layout_below="@+id/lblHeadToHead"
+        android:layout_marginBottom="@dimen/spacing_small"
+        android:layout_below="@id/head_to_head"
         android:layout_alignParentStart="true"
-        android:id="@+id/lblTeam1Wins"
-        android:textColor="@color/primary_text"/>
+        tools:text="Home team wins: 5" />
 
     <TextView
+        android:id="@+id/away_team_wins"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_below="@+id/home_team_wins"
         android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="Team2Wins"
-        android:layout_marginLeft="6dp"
-        android:layout_marginBottom="18dp"
-        android:layout_below="@+id/lblTeam1Wins"
+        android:layout_marginBottom="@dimen/spacing_small"
         android:layout_alignParentStart="true"
-        android:id="@+id/lblTeam2Wins"
-        android:textColor="@color/primary_text"/>
+        tools:text="Away team wins: 4" />
 
     <TextView
+        android:id="@+id/draws"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/home_team_wins"
+        android:layout_alignEnd="@+id/fixture_away_team"
         android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="Draws"
-        android:id="@+id/lblDraws"
-        android:textColor="@color/primary_text"
-        android:layout_alignTop="@+id/lblTeam1Wins"
-        android:layout_alignEnd="@+id/fixtureAwayTeam" />
+        tools:text="Draws: 7" />
 
-    <ScrollView
+    <ListView
+        android:id="@+id/head_to_head_fixtures"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:id="@+id/scrollView"
-        android:layout_below="@+id/lblTeam2Wins"
-        android:layout_alignParentStart="true" >
-
-        <LinearLayout
-            android:orientation="vertical"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:id="@+id/headToHeadLinearLayout">
-
-
-            </LinearLayout>
-    </ScrollView>
+        android:layout_height="fill_parent"
+        android:layout_below="@id/away_team_wins"
+        android:drawSelectorOnTop="false" />
 
 </RelativeLayout>

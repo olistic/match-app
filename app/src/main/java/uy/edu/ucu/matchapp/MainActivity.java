@@ -14,7 +14,9 @@ import android.widget.Spinner;
 
 import org.parceler.Parcels;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 import retrofit.Callback;
 import retrofit.RetrofitError;
@@ -41,7 +43,11 @@ public class MainActivity extends ListActivity {
 
         // Fetch fixtures
         // TODO: Fetch only today's fixtures
-        new RestClient(this).getFootballDataService().getFixtures(null, null, new Callback<Fixtures>() {
+        String today = null;
+//        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+//        String today = df.format(new Date());
+
+        new RestClient(this).getFootballDataService().getFixtures(today, today, new Callback<Fixtures>() {
             @Override
             public void success(Fixtures fixtures, Response response) {
                 for (final Fixture fixture : fixtures.getFixtureList()) {

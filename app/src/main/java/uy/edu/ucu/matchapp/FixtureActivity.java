@@ -6,10 +6,12 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import org.parceler.Parcels;
+
+import java.text.SimpleDateFormat;
 
 import retrofit.Callback;
 import retrofit.RetrofitError;
@@ -19,8 +21,7 @@ import uy.edu.ucu.matchapp.models.FixtureDetail;
 import uy.edu.ucu.matchapp.models.LeagueTable;
 import uy.edu.ucu.matchapp.models.Team;
 import uy.edu.ucu.matchapp.network.RestClient;
-import uy.edu.ucu.matchapp.views.adapters.HeadTHeadListItemView;
-
+import uy.edu.ucu.matchapp.views.adapters.HeadToHeadFixturesAdapter;
 
 public class FixtureActivity extends Activity {
 
@@ -29,13 +30,13 @@ public class FixtureActivity extends Activity {
     private TextView mMatchDayTextView;
     private TextView mStatusTextView;
     private TextView mDateTextView;
+    private TextView mTimeTextView;
     private TextView mHomeTeamTextView;
     private TextView mAwayTeamTextView;
-    private TextView mTeam1Wins;
-    private TextView mTeam2Wins;
-    private TextView mDraws;
-
-    private LinearLayout headToheadLL;
+    private TextView mHomeTeamWinsTextView;
+    private TextView mAwayTeamWinsTextView;
+    private TextView mDrawsTextView;
+    private ListView mHeadToHeadListView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,16 +44,16 @@ public class FixtureActivity extends Activity {
         setContentView(R.layout.activity_fixture);
 
         // Look up view for data population
-        mMatchDayTextView = (TextView) findViewById(R.id.fixtureMatchday);
-        mStatusTextView = (TextView) findViewById(R.id.fixtureStatus);
-        mDateTextView = (TextView) findViewById(R.id.fixtureDate);
-        mHomeTeamTextView = (TextView) findViewById(R.id.fixtureHomeTeam);
-        mAwayTeamTextView = (TextView) findViewById(R.id.fixtureAwayTeam);
-        mTeam1Wins = (TextView) findViewById(R.id.lblTeam1Wins);
-        mTeam2Wins = (TextView) findViewById(R.id.lblTeam2Wins);
-        mDraws = (TextView) findViewById(R.id.lblDraws);
-
-        headToheadLL = (LinearLayout)findViewById(R.id.headToHeadLinearLayout);
+        mMatchDayTextView = (TextView) findViewById(R.id.fixture_match_day);
+        mStatusTextView = (TextView) findViewById(R.id.fixture_status);
+        mDateTextView = (TextView) findViewById(R.id.fixture_date);
+        mTimeTextView = (TextView) findViewById(R.id.fixture_time);
+        mHomeTeamTextView = (TextView) findViewById(R.id.fixture_home_team);
+        mAwayTeamTextView = (TextView) findViewById(R.id.fixture_away_team);
+        mHomeTeamWinsTextView = (TextView) findViewById(R.id.home_team_wins);
+        mAwayTeamWinsTextView = (TextView) findViewById(R.id.away_team_wins);
+        mDrawsTextView = (TextView) findViewById(R.id.draws);
+        mHeadToHeadListView = (ListView) findViewById(R.id.head_to_head_fixtures);
 
         // Get fixture from intent
         Fixture fixture = Parcels.unwrap(this.getIntent().getParcelableExtra("FIXTURE"));
@@ -70,26 +71,31 @@ public class FixtureActivity extends Activity {
             public void success(FixtureDetail fixtureDetail, Response response) {
                 mFixtureDetail = fixtureDetail;
 
-                String soccerSeasonUrl = mFixtureDetail.getFixture().getLinks().get("soccerseason").get("href");
-                int soccerSeasonId = Integer.parseInt(soccerSeasonUrl.substring(soccerSeasonUrl.lastIndexOf('/') + 1));
-                new RestClient(getApplicationContext()).getFootballDataService().getSoccerSeasonLeagueTable(soccerSeasonId, new Callback<LeagueTable>() {
-                    @Override
-                    public void success(LeagueTable leagueTable, Response response) {
-                        mLeagueTable = leagueTable;
-                    }
-                    @Override
-                    public void failure(RetrofitError error) {
-                        // TODO: Handle error
-                    }
-                });
+                SimpleDateFormat df = new SimpleDateFormat("dd/MM/yyyy");
+                SimpleDateFormat tf = new SimpleDateFormat("hh:mm a");
 
                 // Populate the data into the template view using the data object
-                mMatchDayTextView.setText(String.format("Match day %d", mFixtureDetail.getFixture().getMatchDay()));
+                mMatchDayTextView.setText(String.format("Match day: %d", mFixtureDetail.getFixture().getMatchDay()));
                 mStatusTextView.setText(mFixtureDetail.getFixture().getStatus());
-                mDateTextView.setText(mFixtureDetail.getFixture().getDate().toString());
+                mDateTextView.setText(df.format(mFixtureDetail.getFixture().getDate()));
+                mTimeTextView.setText(tf.format(mFixtureDetail.getFixture().getDate()));
                 mHomeTeamTextView.setText(mFixtureDetail.getFixture().getHomeTeamName());
                 mAwayTeamTextView.setText(mFixtureDetail.getFixture().getAwayTeamName());
 
+                mHomeTeamWinsTextView.setText(String.format("%s: %d",
+                        mFixtureDetail.getFixture().getHomeTeamName(),
+                        mFixtureDetail.getHeadToHead().getHomeTeamWins()));
+
+                mAwayTeamWinsTextView.setText(String.format("%s: %d",
+                        mFixtureDetail.getFixture().getAwayTeamName(),
+                        mFixtureDetail.getHeadToHead().getAwayTeamWins()));
+
+                mDrawsTextView.setText(String.format("Draws: %s",
+                        mFixtureDetail.getHeadToHead().getDraws()));
+
+                mHeadToHeadListView.setAdapter(new HeadToHeadFixturesAdapter(getApplicationContext(), mFixtureDetail.getHeadToHead().getFixtureList()));
+
+                // Fetch home team
                 String homeTeamUrl = mFixtureDetail.getFixture().getLinks().get("homeTeam").get("href");
                 final int homeTeamId = Integer.parseInt(homeTeamUrl.substring(homeTeamUrl.lastIndexOf('/') + 1));
                 new RestClient(getApplicationContext()).getFootballDataService().getTeam(homeTeamId, new Callback<Team>() {
@@ -106,13 +112,15 @@ public class FixtureActivity extends Activity {
                                 startActivity(intent);
                             }
                         });
-
                     }
+
                     @Override
                     public void failure(RetrofitError error) {
                         // TODO: Handle error
                     }
                 });
+
+                // Fetch away team
                 String awayTeamUrl = mFixtureDetail.getFixture().getLinks().get("awayTeam").get("href");
                 final int awayTeamId = Integer.parseInt(awayTeamUrl.substring(awayTeamUrl.lastIndexOf('/') + 1));
                 new RestClient(getApplicationContext()).getFootballDataService().getTeam(awayTeamId, new Callback<Team>() {
@@ -130,25 +138,27 @@ public class FixtureActivity extends Activity {
                             }
                         });
                     }
+
                     @Override
                     public void failure(RetrofitError error) {
                         // TODO: Handle error
                     }
                 });
 
+                // Fetch league table
+                String soccerSeasonUrl = mFixtureDetail.getFixture().getLinks().get("soccerseason").get("href");
+                int soccerSeasonId = Integer.parseInt(soccerSeasonUrl.substring(soccerSeasonUrl.lastIndexOf('/') + 1));
+                new RestClient(getApplicationContext()).getFootballDataService().getSoccerSeasonLeagueTable(soccerSeasonId, new Callback<LeagueTable>() {
+                    @Override
+                    public void success(LeagueTable leagueTable, Response response) {
+                        mLeagueTable = leagueTable;
+                    }
 
-
-
-                mTeam1Wins.setText(mFixtureDetail.getFixture().getHomeTeamName() + mFixtureDetail.getHeadToHead().getHomeTeamWins());
-                mTeam2Wins.setText(mFixtureDetail.getFixture().getAwayTeamName() + mFixtureDetail.getHeadToHead().getAwayTeamWins());
-                mDraws.setText("Draws " + mFixtureDetail.getHeadToHead().getDraws());
-
-                for(Fixture fixt : mFixtureDetail.getHeadToHead().getFixtureList()){
-                    String homeTeamInfo = fixt.getHomeTeamName()+ "  " + fixt.getResult().get("goalsHomeTeam");
-                    String awayTeamInfo = fixt.getAwayTeamName()+ "  " + fixt.getResult().get("goalsAwayTeam");
-                    HeadTHeadListItemView item = new HeadTHeadListItemView(getApplicationContext(),fixt.getDate(),homeTeamInfo, awayTeamInfo);
-                    headToheadLL.addView(item);
-                }
+                    @Override
+                    public void failure(RetrofitError error) {
+                        // TODO: Handle error
+                    }
+                });
             }
 
             @Override
@@ -162,6 +172,8 @@ public class FixtureActivity extends Activity {
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_fixture, menu);
+
+        // Return true to display menu
         return true;
     }
 
@@ -174,7 +186,35 @@ public class FixtureActivity extends Activity {
 
         switch (id) {
             case R.id.action_share:
-                // TODO: Share fixture in social networks
+                if (mFixtureDetail != null) {
+                    SimpleDateFormat df = new SimpleDateFormat("dd/MM/yyyy");
+                    SimpleDateFormat tf = new SimpleDateFormat("hh:mm a");
+
+                    // Build share text
+                    StringBuilder sb = new StringBuilder();
+                    if (mFixtureDetail.getFixture().getStatus().equals("FINISHED")) {
+                        sb.append(String.format("%s (%d) vs. %s (%d) ",
+                                mFixtureDetail.getFixture().getHomeTeamName(),
+                                mFixtureDetail.getFixture().getResult().get("goalsHomeTeam"),
+                                mFixtureDetail.getFixture().getAwayTeamName(),
+                                mFixtureDetail.getFixture().getResult().get("goalsAwayTeam")));
+                    } else {
+                        sb.append(String.format("%s vs. %s ",
+                                mFixtureDetail.getFixture().getHomeTeamName(),
+                                mFixtureDetail.getFixture().getAwayTeamName()));
+                    }
+                    sb.append(String.format("(%s @ %s) ", df.format(mFixtureDetail.getFixture().getDate()),
+                            tf.format(mFixtureDetail.getFixture().getDate())));
+                    sb.append("\n");
+                    sb.append("https://play.google.com/store/apps?hl=es");
+
+                    // Create share intent
+                    Intent sendIntent = new Intent();
+                    sendIntent.setAction(Intent.ACTION_SEND);
+                    sendIntent.putExtra(Intent.EXTRA_TEXT, sb.toString());
+                    sendIntent.setType("text/plain");
+                    startActivity(Intent.createChooser(sendIntent, "Share fixture to..."));
+                }
                 return true;
         }
 
