@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.LinearLayout;
 
 import org.parceler.Parcels;
 
@@ -12,12 +13,15 @@ import retrofit.RetrofitError;
 import retrofit.client.Response;
 import uy.edu.ucu.matchapp.models.LeagueTable;
 import uy.edu.ucu.matchapp.models.SoccerSeason;
+import uy.edu.ucu.matchapp.models.StandingTeam;
 import uy.edu.ucu.matchapp.network.RestClient;
+import uy.edu.ucu.matchapp.views.adapters.TeamTableListItemView;
 
 
 public class LeagueTableActivity extends Activity {
 
     private SoccerSeason mSoccerSeason;
+    private LinearLayout mTableLinearLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,6 +29,9 @@ public class LeagueTableActivity extends Activity {
         setContentView(R.layout.activity_soccer_season);
 
         mSoccerSeason = Parcels.unwrap(this.getIntent().getParcelableExtra("SOCCER_SEASON"));
+        mTableLinearLayout = (LinearLayout) findViewById(R.id.tableLinearLayout);
+
+        setTitle(mSoccerSeason.getCaption());
 
         // Fetch league table
         String soccerSeasonUrl = mSoccerSeason.getLinks().get("self").get("href");
@@ -32,7 +39,10 @@ public class LeagueTableActivity extends Activity {
         new RestClient(this).getFootballDataService().getSoccerSeasonLeagueTable(soccerSeasonId, new Callback<LeagueTable>() {
             @Override
             public void success(LeagueTable leagueTable, Response response) {
-
+                for(StandingTeam st : leagueTable.getStanding()){
+                    TeamTableListItemView item = new TeamTableListItemView(getApplicationContext(),st.getPosition(),st.getTeamName(),st.getPlayedGames(),st.getGoals(),st.getGoalsAgainst(),st.getGoalDifference(),st.getPoints());
+                    mTableLinearLayout.addView(item);
+                }
             }
 
             @Override

@@ -7,7 +7,8 @@
         android:layout_width="0dp"
         android:layout_weight="1"
         android:layout_height="wrap_content"
-        android:id="@+id/team_position" />
+        android:id="@+id/team_position"
+        android:textColor="@color/primary_text"/>
 
     <TextView
         android:id="@+id/team_name"
@@ -18,30 +19,40 @@
         />
 
 
-
     <TextView
         android:layout_width="0dp"
         android:layout_weight="1"
         android:layout_height="wrap_content"
+        android:textColor="@color/primary_text"
         android:id="@+id/team_pj" />
 
     <TextView
         android:layout_width="0dp"
         android:layout_weight="1"
         android:layout_height="wrap_content"
+        android:textColor="@color/primary_text"
         android:id="@+id/team_gf" />
 
     <TextView
         android:layout_width="0dp"
         android:layout_weight="1"
         android:layout_height="wrap_content"
-        android:text="DIF." />
+        android:textColor="@color/primary_text"
+        android:id="@+id/team_ga" />
 
     <TextView
         android:layout_width="0dp"
         android:layout_weight="1"
         android:layout_height="wrap_content"
-        android:text="PTS"
+        android:textColor="@color/primary_text"
+        android:id="@+id/team_dif" />
+
+    <TextView
+        android:layout_width="0dp"
+        android:layout_weight="1"
+        android:layout_height="wrap_content"
+        android:textColor="@color/primary_text"
+        android:id="@+id/team_pts"
         android:textStyle="bold" />
 
 </LinearLayout>
