@@ -7,8 +7,9 @@
 
     <ImageView
         android:id="@+id/team_image"
-        android:layout_width="160dip"
-        android:layout_height="160dip"
+        android:layout_margin="5dp"
+        android:layout_width="match_parent"
+        android:layout_height="220dp"
         android:layout_gravity="center_horizontal" />
 
     <TextView

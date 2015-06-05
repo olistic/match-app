@@ -1,11 +1,21 @@
 package uy.edu.ucu.matchapp;
 
 import android.app.Activity;
+import android.graphics.drawable.Drawable;
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.larvalabs.svgandroid.SVG;
+import com.larvalabs.svgandroid.SVGParser;
+
 import org.parceler.Parcels;
+
+import java.net.HttpURLConnection;
+import java.net.URL;
 
 import retrofit.Callback;
 import retrofit.RetrofitError;
@@ -33,6 +43,7 @@ public class TeamActivity extends Activity {
     private TextView team_dif;
     private TextView team_pts;
     private LinearLayout playersLinearLayout;
+    private ImageView team_image;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,6 +67,7 @@ public class TeamActivity extends Activity {
             }
         }
 
+
         marketvalue = (TextView)findViewById(R.id.team_market_value);
         teamName = (TextView) findViewById(R.id.team_name_grid);
         teamCurrentPosition = (TextView) findViewById(R.id.team_current_position);
@@ -65,6 +77,7 @@ public class TeamActivity extends Activity {
         team_dif = (TextView) findViewById(R.id.team_dif);
         team_pts = (TextView) findViewById(R.id.team_pts);
         playersLinearLayout = (LinearLayout) findViewById(R.id.teamPlayersLinearLayout);
+        team_image = (ImageView) findViewById(R.id.team_image);
 
         marketvalue.setText(mTeam.getSquadMarketValue());
         teamName.setText(mTeam.getName());
@@ -74,6 +87,50 @@ public class TeamActivity extends Activity {
         team_ga.setText(String.valueOf(mStandingTeam.getGoalsAgainst()));
         team_dif.setText(String.valueOf(mStandingTeam.getGoalDifference()));
         team_pts.setText(String.valueOf(mStandingTeam.getPoints()));
+
+        if(mTeam.getImageUrl() != null) {
+            new AsyncTask<String, Void, Drawable>() {
+
+                @Override
+                protected Drawable doInBackground(String... params) {
+
+                    String url = params[0];
+                    HttpURLConnection connection = null;
+                    Drawable drawable = null;
+                    try {
+                        connection = (HttpURLConnection) new URL(url).openConnection();
+                        SVG svgLogo = SVGParser.getSVGFromInputStream(connection.getInputStream());
+                        drawable = svgLogo.createPictureDrawable();
+
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    } finally {
+                        if (connection != null) connection.disconnect();
+                    }
+
+                    // si no tengo drawable disponible cargo un placeholder (por ej. el icono de la app)
+                    if (drawable == null) {
+                        drawable = getResources().getDrawable(R.mipmap.ic_launcher);
+                    }
+                    return drawable;
+                }
+
+                @Override
+                public void onPostExecute(Drawable logoDrawable) {
+
+                    // setLayerType fue introducido en la Version HONEYCOMB (API 11)
+                    if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.HONEYCOMB) {
+                        team_image.setLayerType(View.LAYER_TYPE_SOFTWARE, null);
+                        team_image.setImageDrawable(logoDrawable);
+                    } else {
+                        // si no pudeo setear el layerType (Version < HONEYCOMB), uso el placeholder u oculto el imageview
+                        team_image.setVisibility(View.GONE);
+                    }
+
+                }
+            }.execute(mTeam.getImageUrl());
+        }
+
 
         new RestClient(getApplicationContext()).getFootballDataService().getTeamPlayers(teamID, new Callback<Players>() {
             @Override
@@ -90,6 +147,9 @@ public class TeamActivity extends Activity {
                 // TODO: Handle error
             }
         });
+
+
+        
 
     }
 }
