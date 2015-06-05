@@ -7,12 +7,12 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.TextView;
 
 
 import com.larvalabs.svgandroid.SVG;
 import com.larvalabs.svgandroid.SVGBuilder;
-import com.larvalabs.svgandroid.SVGParser;
 
 import org.parceler.Parcels;
 
@@ -29,6 +29,7 @@ import uy.edu.ucu.matchapp.models.StandingTeam;
 import uy.edu.ucu.matchapp.models.Team;
 import uy.edu.ucu.matchapp.network.RestClient;
 import uy.edu.ucu.matchapp.views.adapters.PlayerListItemView;
+import uy.edu.ucu.matchapp.views.adapters.PlayersAdapter;
 
 public class TeamActivity extends Activity {
 
@@ -36,16 +37,16 @@ public class TeamActivity extends Activity {
     private int teamID;
     private LeagueTable mLeagueTable;
     private StandingTeam mStandingTeam;
-    private TextView marketvalue;
+    private ImageView teamImageView;
+    private TextView marketValue;
     private TextView teamName;
     private TextView teamCurrentPosition;
-    private TextView team_pj;
-    private TextView team_gf;
-    private TextView team_ga;
-    private TextView team_dif;
-    private TextView team_pts;
-    private LinearLayout playersLinearLayout;
-    private ImageView team_image;
+    private TextView teamPj;
+    private TextView teamGf;
+    private TextView teamGa;
+    private TextView teamDif;
+    private TextView teamPts;
+    private ListView playerListView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,28 +70,29 @@ public class TeamActivity extends Activity {
             }
         }
 
-
-        marketvalue = (TextView)findViewById(R.id.team_market_value);
+        // Look up views
+        teamImageView = (ImageView) findViewById(R.id.team_image);
+        marketValue = (TextView)findViewById(R.id.team_market_value);
         teamName = (TextView) findViewById(R.id.team_name_grid);
         teamCurrentPosition = (TextView) findViewById(R.id.team_current_position);
-        team_pj = (TextView) findViewById(R.id.team_pj);
-        team_gf = (TextView) findViewById(R.id.team_gf);
-        team_ga = (TextView) findViewById(R.id.team_ga);
-        team_dif = (TextView) findViewById(R.id.team_dif);
-        team_pts = (TextView) findViewById(R.id.team_pts);
-        playersLinearLayout = (LinearLayout) findViewById(R.id.teamPlayersLinearLayout);
-        team_image = (ImageView) findViewById(R.id.team_image);
+        teamPj = (TextView) findViewById(R.id.team_pj);
+        teamGf = (TextView) findViewById(R.id.team_gf);
+        teamGa = (TextView) findViewById(R.id.team_ga);
+        teamDif = (TextView) findViewById(R.id.team_dif);
+        teamPts = (TextView) findViewById(R.id.team_pts);
+        playerListView = (ListView) findViewById(R.id.players);
 
-        marketvalue.setText(mTeam.getSquadMarketValue());
+        // Populate views
+        marketValue.setText(mTeam.getSquadMarketValue());
         teamName.setText(mTeam.getName());
         teamCurrentPosition.setText(String.valueOf(mStandingTeam.getPosition()));
-        team_pj.setText(String.valueOf(mStandingTeam.getPlayedGames()));
-        team_gf.setText(String.valueOf(mStandingTeam.getGoals()));
-        team_ga.setText(String.valueOf(mStandingTeam.getGoalsAgainst()));
-        team_dif.setText(String.valueOf(mStandingTeam.getGoalDifference()));
-        team_pts.setText(String.valueOf(mStandingTeam.getPoints()));
+        teamPj.setText(String.valueOf(mStandingTeam.getPlayedGames()));
+        teamGf.setText(String.valueOf(mStandingTeam.getGoals()));
+        teamGa.setText(String.valueOf(mStandingTeam.getGoalsAgainst()));
+        teamDif.setText(String.valueOf(mStandingTeam.getGoalDifference()));
+        teamPts.setText(String.valueOf(mStandingTeam.getPoints()));
 
-        if(mTeam.getImageUrl() != null) {
+        if (mTeam.getImageUrl() != null) {
             new AsyncTask<String, Void, Drawable>() {
 
                 @Override
@@ -122,26 +124,21 @@ public class TeamActivity extends Activity {
 
                     // setLayerType fue introducido en la Version HONEYCOMB (API 11)
                     if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.HONEYCOMB) {
-                        team_image.setLayerType(View.LAYER_TYPE_SOFTWARE, null);
-                        team_image.setImageDrawable(logoDrawable);
+                        teamImageView.setLayerType(View.LAYER_TYPE_SOFTWARE, null);
+                        teamImageView.setImageDrawable(logoDrawable);
                     } else {
                         // si no pudeo setear el layerType (Version < HONEYCOMB), uso el placeholder u oculto el imageview
-                        team_image.setVisibility(View.GONE);
+                        teamImageView.setVisibility(View.GONE);
                     }
 
                 }
             }.execute(mTeam.getImageUrl());
         }
 
-
         new RestClient(getApplicationContext()).getFootballDataService().getTeamPlayers(teamID, new Callback<Players>() {
             @Override
             public void success(Players players, Response response) {
-                for(Player p : players.getPlayerList()){
-                    PlayerListItemView item = new PlayerListItemView(getApplicationContext(),String.valueOf(p.getJerseyNumber()), p.getName(), p.getPosition(), p.getNationality());
-                    playersLinearLayout.addView(item);
-                }
-
+                playerListView.setAdapter(new PlayersAdapter(getApplicationContext(), players.getPlayerList()));
             }
 
             @Override
@@ -149,9 +146,5 @@ public class TeamActivity extends Activity {
                 // TODO: Handle error
             }
         });
-
-
-
-
     }
 }

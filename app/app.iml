@@ -88,6 +88,7 @@
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" exported="" name="gson-2.3.1" level="project" />
     <orderEntry type="library" exported="" name="okhttp-2.4.0" level="project" />
+    <orderEntry type="library" exported="" name="svg-android-2.0.6" level="project" />
     <orderEntry type="library" exported="" name="parceler-1.0.0" level="project" />
     <orderEntry type="library" exported="" name="picasso-2.5.2" level="project" />
     <orderEntry type="library" exported="" name="retrofit-1.9.0" level="project" />

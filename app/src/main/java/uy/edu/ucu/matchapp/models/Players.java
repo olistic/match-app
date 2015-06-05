@@ -5,21 +5,21 @@ import com.google.gson.annotations.SerializedName;
 
 import org.parceler.Parcel;
 
-import java.util.List;
+import java.util.ArrayList;
 
 @Parcel
 public class Players {
     @Expose
     @SerializedName("players")
-    private List<Player> playerList;
+    private ArrayList<Player> playerList;
 
     public Players() { /* Required empty bean constructor */ }
 
-    public List<Player> getPlayerList() {
+    public ArrayList<Player> getPlayerList() {
         return playerList;
     }
 
-    public void setPlayerList(List<Player> playerList) {
+    public void setPlayerList(ArrayList<Player> playerList) {
         this.playerList = playerList;
     }
 }
