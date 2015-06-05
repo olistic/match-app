@@ -9,7 +9,9 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+
 import com.larvalabs.svgandroid.SVG;
+import com.larvalabs.svgandroid.SVGBuilder;
 import com.larvalabs.svgandroid.SVGParser;
 
 import org.parceler.Parcels;
@@ -99,8 +101,8 @@ public class TeamActivity extends Activity {
                     Drawable drawable = null;
                     try {
                         connection = (HttpURLConnection) new URL(url).openConnection();
-                        SVG svgLogo = SVGParser.getSVGFromInputStream(connection.getInputStream());
-                        drawable = svgLogo.createPictureDrawable();
+                        SVG svgLogo = new SVGBuilder().readFromInputStream(connection.getInputStream()).build();
+                        drawable = svgLogo.getDrawable();
 
                     } catch (Exception e) {
                         e.printStackTrace();
@@ -149,7 +151,7 @@ public class TeamActivity extends Activity {
         });
 
 
-        
+
 
     }
 }
